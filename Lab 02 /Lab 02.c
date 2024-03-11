@@ -8,10 +8,10 @@
 int main(void) {
     int comunicacao[2]; 
     pid_t pid;
-    char msgPai[MAX_LEN] = "Mensagem do pai";
+    char msgPai[MAX_LEN] = "Ola filho";
     char recebido[MAX_LEN];
 
-   
+ 
     if (pipe(comunicacao) == -1) {
         perror("Falha ao abrir pipe");
         exit(EXIT_FAILURE);
@@ -23,14 +23,14 @@ int main(void) {
         exit(EXIT_FAILURE);
     } else if (pid == 0) { 
         close(comunicacao[1]); 
-        
+     
         read(comunicacao[0], recebido, MAX_LEN);
         printf("Mensagem do filho: '%s'\n", recebido);
         close(comunicacao[0]); 
         printf("Processo filho finalizado.\n");
         exit(EXIT_SUCCESS);
     } else { 
-        close(comunicacao[0]);
+        close(comunicacao[0]); 
        
         write(comunicacao[1], msgPai, MAX_LEN);
         printf("Pai enviou mensagem.\n");
