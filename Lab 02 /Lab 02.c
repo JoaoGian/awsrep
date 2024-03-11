@@ -6,12 +6,12 @@
 #define MAX_LEN 256
 
 int main(void) {
-    int comunicacao[2]; // Pipeline para comunicação entre pai e filho
+    int comunicacao[2]; 
     pid_t pid;
     char msgPai[MAX_LEN] = "Mensagem do pai";
     char recebido[MAX_LEN];
 
-    // Inicializa o pipe
+   
     if (pipe(comunicacao) == -1) {
         perror("Falha ao abrir pipe");
         exit(EXIT_FAILURE);
@@ -21,21 +21,21 @@ int main(void) {
     if (pid < 0) {
         perror("Falha na criação do processo");
         exit(EXIT_FAILURE);
-    } else if (pid == 0) { // No filho
-        close(comunicacao[1]); // Fecha o canal de escrita no filho
-        // Lê a mensagem do pai
+    } else if (pid == 0) { 
+        close(comunicacao[1]); 
+        
         read(comunicacao[0], recebido, MAX_LEN);
         printf("Mensagem do filho: '%s'\n", recebido);
-        close(comunicacao[0]); // Fecha o canal de leitura
+        close(comunicacao[0]); 
         printf("Processo filho finalizado.\n");
         exit(EXIT_SUCCESS);
-    } else { // No pai
-        close(comunicacao[0]); // Fecha o canal de leitura no pai
-        // Escreve para o filho
+    } else { 
+        close(comunicacao[0]);
+       
         write(comunicacao[1], msgPai, MAX_LEN);
         printf("Pai enviou mensagem.\n");
-        close(comunicacao[1]); // Fecha o canal de escrita
-        wait(NULL); // Aguarda o filho terminar
+        close(comunicacao[1]); 
+        wait(NULL); 
         printf("Processo pai finalizado.\n");
     }
 
