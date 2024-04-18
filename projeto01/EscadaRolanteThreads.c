@@ -1,59 +1,41 @@
-#include <pthread.h>
 #include <stdio.h>
-#include <stdlib.h>
+#include <pthread.h>
+#include <unistd.h>
 
+#define NUM_PESSOAS 3
+
+// Estrutura para armazenar informações de cada pessoa
 typedef struct {
-    int time;  // Tempo de chegada
-    int direction;  // Direção desejada
-} Person;
+    int tempo_chegada;
+    int direcao;
+} Pessoa;
 
-// Mutex e variáveis de condição
-pthread_mutex_t mutex;
-pthread_cond_t cond;
-
-int current_direction = -1;  // Direção atual da escada (-1 indica parada)
-
-void* use_escalator(void* arg) {
-    Person* p = (Person*) arg;
-    
-    pthread_mutex_lock(&mutex);
-    while (current_direction != -1 && current_direction != p->direction) {
-        pthread_cond_wait(&cond, &mutex);
-    }
-    current_direction = p->direction;
-    printf("Pessoa usando a escada na direção %d no tempo %d\n", p->direction, p->time);
-    pthread_mutex_unlock(&mutex);
-    
-    // Simular o uso da escada
-    sleep(10);
-    
-    pthread_mutex_lock(&mutex);
-    current_direction = -1;
-    pthread_cond_broadcast(&cond);
-    pthread_mutex_unlock(&mutex);
-    
+// Simulação da escada rolante
+void *simulacao_escada(void *arg) {
+    Pessoa *pessoa = (Pessoa *)arg;
+    sleep(pessoa->tempo_chegada); // Simula a espera até a pessoa chegar
+    printf("Pessoa chegou no tempo %d, querendo ir na direção %d\n", pessoa->tempo_chegada, pessoa->direcao);
+    // Adicione lógica para simular a movimentação na escada aqui
     return NULL;
 }
 
 int main() {
-    pthread_mutex_init(&mutex, NULL);
-    pthread_cond_init(&cond, NULL);
-    
-    // Exemplo: substituir por leitura de entrada real
-    int N = 3;  // Número de pessoas
-    Person people[] = {{5, 0}, {8, 0}, {13, 0}};
-    
-    pthread_t threads[N];
-    for (int i = 0; i < N; i++) {
-        pthread_create(&threads[i], NULL, use_escalator, (void*)&people[i]);
+    pthread_t threads[NUM_PESSOAS];
+    Pessoa pessoas[NUM_PESSOAS] = {
+        {5, 0},
+        {8, 0},
+        {13, 0}
+    };
+
+    for (int i = 0; i < NUM_PESSOAS; i++) {
+        pthread_create(&threads[i], NULL, simulacao_escada, (void *)&pessoas[i]);
     }
-    
-    for (int i = 0; i < N; i++) {
+
+    for (int i = 0; i < NUM_PESSOAS; i++) {
         pthread_join(threads[i], NULL);
     }
-    
-    pthread_mutex_destroy(&mutex);
-    pthread_cond_destroy(&cond);
-    
+
+    printf("Último momento em que a escada para: %d\n", /* último tempo calculado */);
+
     return 0;
 }
