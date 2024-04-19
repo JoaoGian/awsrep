@@ -1,9 +1,8 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-
-#define NUM_PESSOAS 3
 
 // Estrutura para armazenar informações de cada pessoa
 typedef struct {
@@ -11,32 +10,49 @@ typedef struct {
     int direcao;
 } Pessoa;
 
-// Simulação da escada rolante
+// Função para simular a operação da escada rolante para cada pessoa
 void simula_pessoa(Pessoa pessoa) {
-    sleep(pessoa.tempo_chegada); // Simula a espera até a pessoa chegar
+    sleep(pessoa.tempo_chegada); // Simula o tempo até a pessoa chegar na escada
     printf("Pessoa chegou no tempo %d, querendo ir na direção %d\n", pessoa.tempo_chegada, pessoa.direcao);
-    // Adicione lógica para simular a movimentação na escada aqui
+    // Adicionar lógica para controle da escada aqui
 }
 
 int main() {
-    Pessoa pessoas[NUM_PESSOAS] = {
-        {5, 0},
-        {8, 0},
-        {13, 0}
-    };
+    FILE *file;
+    int num_pessoas;
+    Pessoa *pessoas;
 
-    for (int i = 0; i < NUM_PESSOAS; i++) {
+    file = fopen("entrada.txt", "r");
+    if (file == NULL) {
+        perror("Erro ao abrir o arquivo");
+        return 1;
+    }
+
+    // Lê o número de pessoas do arquivo
+    fscanf(file, "%d", &num_pessoas);
+    pessoas = malloc(num_pessoas * sizeof(Pessoa));
+
+    // Lê os tempos de chegada e as direções do arquivo
+    for (int i = 0; i < num_pessoas; i++) {
+        fscanf(file, "%d %d", &pessoas[i].tempo_chegada, &pessoas[i].direcao);
+    }
+
+    for (int i = 0; i < num_pessoas; i++) {
         pid_t pid = fork();
         if (pid == 0) { // Processo filho
             simula_pessoa(pessoas[i]);
-            return 0;
+            exit(0);
         }
     }
 
     // Processo pai espera todos os filhos terminarem
-    for (int i = 0; i < NUM_PESSOAS; i++) {
+    for (int i = 0; i < num_pessoas; i++) {
         wait(NULL);
     }
+
+    // Limpeza
+    free(pessoas);
+    fclose(file);
 
     printf("Último momento em que a escada para: %d\n", /* último tempo calculado */);
 
