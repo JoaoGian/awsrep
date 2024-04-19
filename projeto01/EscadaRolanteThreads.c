@@ -1,41 +1,61 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <pthread.h>
 #include <unistd.h>
 
-#define NUM_PESSOAS 3
-
-// Estrutura para armazenar informações de cada pessoa
+// Definição da estrutura para armazenar informações de cada pessoa
 typedef struct {
-    int tempo_chegada;
-    int direcao;
-} Pessoa;
+    int arrival_time;
+    int direction;
+} Person;
 
-// Simulação da escada rolante
-void *simulacao_escada(void *arg) {
-    Pessoa *pessoa = (Pessoa *)arg;
-    sleep(pessoa->tempo_chegada); // Simula a espera até a pessoa chegar
-    printf("Pessoa chegou no tempo %d, querendo ir na direção %d\n", pessoa->tempo_chegada, pessoa->direcao);
-    // Adicione lógica para simular a movimentação na escada aqui
+// Função que simula a operação da escada rolante para cada pessoa
+void *escalator_simulation(void *arg) {
+    Person *person = (Person *)arg;
+    sleep(person->arrival_time); // Simula o tempo até a pessoa chegar na escada
+    printf("Pessoa chegou no tempo %d, querendo ir na direção %d\n", person->arrival_time, person->direction);
+    // Adicionar lógica para controle da escada aqui
     return NULL;
 }
 
 int main() {
-    pthread_t threads[NUM_PESSOAS];
-    Pessoa pessoas[NUM_PESSOAS] = {
-        {5, 0},
-        {8, 0},
-        {13, 0}
-    };
+    FILE *file;
+    int num_people;
+    Person *people;
 
-    for (int i = 0; i < NUM_PESSOAS; i++) {
-        pthread_create(&threads[i], NULL, simulacao_escada, (void *)&pessoas[i]);
+    file = fopen("entrada.txt", "r");
+    if (file == NULL) {
+        perror("Erro ao abrir o arquivo");
+        return 1;
     }
 
-    for (int i = 0; i < NUM_PESSOAS; i++) {
+    // Lê o número de pessoas do arquivo
+    fscanf(file, "%d", &num_people);
+    people = malloc(num_people * sizeof(Person));
+
+    // Lê os tempos de chegada e as direções do arquivo
+    for (int i = 0; i < num_people; i++) {
+        fscanf(file, "%d %d", &people[i].arrival_time, &people[i].direction);
+    }
+
+    // Cria uma thread para cada pessoa
+    pthread_t *threads = malloc(num_people * sizeof(pthread_t));
+    for (int i = 0; i < num_people; i++) {
+        pthread_create(&threads[i], NULL, escalator_simulation, (void *)&people[i]);
+    }
+
+    // Espera todas as threads terminarem
+    for (int i = 0; i < num_people; i++) {
         pthread_join(threads[i], NULL);
     }
+
+    // Limpeza
+    free(people);
+    free(threads);
+    fclose(file);
 
     printf("Último momento em que a escada para: %d\n", /* último tempo calculado */);
 
     return 0;
 }
+
