@@ -39,5 +39,5 @@ print thread ---
 
 ![image](https://github.com/JoaoGian/labSO/assets/118188665/2c018c74-e022-4d53-985a-3baf69a66203)
 
-
+erros do codigo de threads: quando testei apesar de ter dado o tempo correto, no aws deu o resultado 43.
 
