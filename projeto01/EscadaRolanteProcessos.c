@@ -4,58 +4,93 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-// Estrutura para armazenar informações de cada pessoa
 typedef struct {
-    int tempo_chegada;
-    int direcao;
-} Pessoa;
+    int timeOfArrival;
+    int travelDirection;
+} Commuter;
 
-// Função para simular a operação da escada rolante para cada pessoa
-void simula_pessoa(Pessoa pessoa) {
-    sleep(pessoa.tempo_chegada); // Simula o tempo até a pessoa chegar na escada
-    printf("Pessoa chegou no tempo %d, querendo ir na direção %d\n", pessoa.tempo_chegada, pessoa.direcao);
-    // Adicionar lógica para controle da escada aqui
+int simulationClock = 0;
+int operatingDirection = -1;
+int numberOfCommuters = 0;
+int endTime = 0;
+int commPipe[2];
+
+void simulateEscalatorOperation(Commuter commuters[], int count) {
+    operatingDirection = commuters[0].travelDirection;
+    endTime = commuters[0].timeOfArrival + 10;
+    int idx = 0;
+    int processedCommuters = 0;
+    int isCommuterWaiting = 0;
+    Commuter delayedCommuter;
+
+    while (processedCommuters < count) {
+        if (simulationClock >= endTime) {
+            operatingDirection = !operatingDirection;
+            if (isCommuterWaiting && delayedCommuter.travelDirection == operatingDirection) {
+                endTime = simulationClock + 10;
+                processedCommuters++;
+                isCommuterWaiting = 0;
+                write(commPipe[1], &endTime, sizeof(endTime));
+            }
+        }
+
+        if (idx < count && simulationClock >= commuters[idx].timeOfArrival) {
+            if (commuters[idx].travelDirection == operatingDirection) {
+                endTime = simulationClock + 10;
+                processedCommuters++;
+                write(commPipe[1], &endTime, sizeof(endTime));
+                idx++;
+            } else {
+                delayedCommuter = commuters[idx++];
+                isCommuterWaiting = 1;
+            }
+        }
+
+        simulationClock++;
+    }
 }
 
 int main() {
-    FILE *file;
-    int num_pessoas;
-    Pessoa *pessoas;
-
-    file = fopen("entrada.txt", "r");
-    if (file == NULL) {
-        perror("Erro ao abrir o arquivo");
-        return 1;
+    FILE *inputStream = fopen("input.txt", "r");
+    if (!inputStream) {
+        perror("Error opening input file");
+        return EXIT_FAILURE;
     }
 
-    // Lê o número de pessoas do arquivo
-    fscanf(file, "%d", &num_pessoas);
-    pessoas = malloc(num_pessoas * sizeof(Pessoa));
+    fscanf(inputStream, "%d", &numberOfCommuters);
+    Commuter *commuters = malloc(numberOfCommuters * sizeof(Commuter));
 
-    // Lê os tempos de chegada e as direções do arquivo
-    for (int i = 0; i < num_pessoas; i++) {
-        fscanf(file, "%d %d", &pessoas[i].tempo_chegada, &pessoas[i].direcao);
+    for (int i = 0; i < numberOfCommuters; i++) {
+        fscanf(inputStream, "%d %d", &commuters[i].timeOfArrival, &commuters[i].travelDirection);
+    }
+    fclose(inputStream);
+
+    if (pipe(commPipe) != 0) {
+        perror("Pipe creation failed");
+        free(commuters);
+        return EXIT_FAILURE;
     }
 
-    for (int i = 0; i < num_pessoas; i++) {
-        pid_t pid = fork();
-        if (pid == 0) { // Processo filho
-            simula_pessoa(pessoas[i]);
-            exit(0);
-        }
+    pid_t pid = fork();
+    if (pid == 0) {
+        close(commPipe[0]);
+        simulateEscalatorOperation(commuters, numberOfCommuters);
+        close(commPipe[1]);
+        free(commuters);
+        exit(EXIT_SUCCESS);
     }
 
-    // Processo pai espera todos os filhos terminarem
-    for (int i = 0; i < num_pessoas; i++) {
-        wait(NULL);
+    close(commPipe[1]);
+    FILE *outputStream = fopen("output.txt", "w");
+    int finalOperationTime;
+    while (read(commPipe[0], &finalOperationTime, sizeof(finalOperationTime)) > 0) {
+        fprintf(outputStream, "%d\n", finalOperationTime);
     }
+    fclose(outputStream);
+    close(commPipe[0]);
 
-    // Limpeza
-    free(pessoas);
-    fclose(file);
+    printf("Final escalator operation ends at: %d\n", finalOperationTime);
 
-    printf("Último momento em que a escada para: %d\n", /* último tempo calculado */);
-
-    return 0;
+    wait(NULL);
+    return EXIT_SUCCESS;
 }
-
