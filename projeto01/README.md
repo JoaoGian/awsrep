@@ -2,7 +2,7 @@ PROBLEMA - PROCESSOS
 
 1. Qual a estratégia que você utilizou para evitar que duas pessoas acessem a escada rolante ao mesmo tempo em cada abordagem?
 
-No código de processos apresentado, não foi incluído nenhum mecanismo específico para impedir que duas pessoas acessem a escada rolante simultaneamente. Cada processo simula individualmente a chegada e ação de uma pessoa. Em um cenário real com um sistema operacional e uma aplicação prática, seria essencial implementar mecanismos de sincronização usando IPC, como semáforos ou memória compartilhada com locks(travas), para controlar o acesso à escada rolante e garantir que apenas um processo (pessoa) possa utilizá-la por vez.
+No código fornecido, a estratégia utilizada envolve controlar o acesso à escada rolante por meio de uma simulação de relógio (simulationClock) e de uma variável que registra o tempo final de operação (endTime). O programa garante que cada passageiro inicie sua travessia apenas quando o simulationClock é igual ou maior que seu tempo de chegada (timeOfArrival) e somente se a escada estiver operando na direção desejada (travelDirection). Caso a escada esteja operando na direção oposta, o passageiro é colocado em espera (isCommuterWaiting setado como verdadeiro e o passageiro é armazenado em delayedCommuter), até que a escada rolante termine seu ciclo atual e possa ser reiniciada na direção correta. Esta abordagem serializa efetivamente o acesso à escada, garantindo que apenas uma operação de travessia ocorra dentro de cada período de 10 segundos.
  
 2. Como garantir que somente uma das direções está ativa de cada vez em cada uma das abordagens?
 
