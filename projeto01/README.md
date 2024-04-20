@@ -30,3 +30,12 @@ PROBLEMA QUESTAO 3 DE PROCESSOS E THREADS
  As threads compartilham memória e recursos com o processo principal(pai), tornando a comunicação e a sincronização entre elas mais fáceis. Por outro lado, os processos são isolados e precisam de mecanismos externos (IPC) para compartilhar informações, o que geralmente é menos eficiente. Os processos proporcionam um isolamento mais eficaz, o que é positivo para a segurança e estabilidade do sistema em geral. No entanto, em situações que requerem uma comunicação intensa e coordenação, como neste exemplo, isso pode representar um obstáculo. Tambem e bom lembrar que Threads são mais leves e rápidas gerenciar do que processos. Visto isso, a implementação utilizando threads é geralmente mais eficiente para o problema em questão,  e  a comunicação e sincronização entre threads são mais diretas e além disso, a gestão de threads por um único processo permite uma coordenação mais eficiente da lógica de controle, como a direção de uma  escada rolante, devido à menor complexidade e ao menor overhead de gerenciamento e sincronização.
 
 
+print --- processo
+
+![image](https://github.com/JoaoGian/labSO/assets/118188665/7979e83b-5c94-4e3a-abda-23d272476006)
+
+print thread --- 
+
+![image](https://github.com/JoaoGian/labSO/assets/118188665/82fe6207-2df3-4a92-88ba-269f0f16c0ce)
+
+
