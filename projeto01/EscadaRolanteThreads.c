@@ -85,6 +85,6 @@ int main() {
     free(threads);
     fclose(file);
     pthread_mutex_destroy(&lock);
-
+    printf (" %d ",last_exit_time);
     return 0;
 }
