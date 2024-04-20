@@ -36,6 +36,7 @@ print --- processo
 
 print thread --- 
 
-![image](https://github.com/JoaoGian/labSO/assets/118188665/82fe6207-2df3-4a92-88ba-269f0f16c0ce)
+![image](https://github.com/JoaoGian/labSO/assets/118188665/2c018c74-e022-4d53-985a-3baf69a66203)
+
 
 
