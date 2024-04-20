@@ -32,7 +32,8 @@ PROBLEMA QUESTAO 3 DE PROCESSOS E THREADS
 
 print --- processo
 
-![image](https://github.com/JoaoGian/labSO/assets/118188665/7979e83b-5c94-4e3a-abda-23d272476006)
+![image](https://github.com/JoaoGian/labSO/assets/118188665/1d65e169-7d7d-4187-9add-8b981b9e4718)
+
 
 print thread --- 
 
