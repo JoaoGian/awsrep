@@ -7,8 +7,8 @@
 
 // Definição da estrutura para armazenar informações de cada pessoa
 typedef struct {
-    int arrival_time;
-    int direction;
+    int arrival_time;  // tempo de chegada
+    int direction;     // direção
 } Person;
 
 // Variável global para controlar o último tempo de saída da escada
@@ -88,4 +88,3 @@ int main() {
 
     return 0;
 }
-
