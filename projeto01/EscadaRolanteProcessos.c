@@ -51,9 +51,9 @@ void simulateEscalatorOperation(Commuter commuters[], int count) {
 }
 
 int main() {
-    FILE *inputStream = fopen("input.txt", "r");
+    FILE *inputStream = fopen("entrada.txt", "r");
     if (!inputStream) {
-        perror("Error opening input file");
+        perror("Error opening entrada file");
         return EXIT_FAILURE;
     }
 
