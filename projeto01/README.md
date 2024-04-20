@@ -13,12 +13,12 @@ Nos vamos fazer isso com semáforos, ja que se pode usar semáforos para bloquea
 PROBLEMA - THREADS
 
 1. Qual a estratégia que você utilizou para evitar que duas pessoas acessem a escada rolante ao mesmo tempo em cada abordagem?
-No entanto, no código acima eu não implementei qualquer mecanismo específico para impedir que duas pessoas acessem a escada rolante ao mesmo tempo. Isso ocorre porque, apesar de criar threads para que pudessem simular a chegada de pessoas em horários diferentes, isso não impede que elas tentem acessar a escada rolante ao mesmo tempo. Para conseguir resolver esse problema seria ideal usar mutexes ou semáforos para sincronizar o acesso à escada rolante, para que somente uma thread ou pessoa podesse operá-la em qualquer momento
+O programa usa um mutex(exclusão mútua) para controlar o acesso à variável last_exit_time, garantindo que apenas uma thread por vez possa ajustar o momento em que a última pessoa terminará de usar a escada rolante. Isso impede que duas pessoas acessem a escada ao mesmo tempo. A apesar de criar threads para que pudessem simular a chegada de pessoas em horários diferentes, isso não impede que elas tentem acessar a escada rolante ao mesmo tempo. Para conseguir resolver esse problema seria ideal usar mutex ou semáforos para sincronizar o acesso à escada rolante, para que somente uma thread ou pessoa podesse operá-la em qualquer momento.
 
 
 2.  Como garantir que somente uma das direções está ativa de cada vez em cada uma das abordagens? 
 
-Um sistema de multi-thread em que apenas uma direção da escada rolante esteja em uso a qualquer momento em um sistema de threads múltiplas pode ser implementado com uma variável de condição adicional junto com um mutex. A variável de condição usaria o estatuto para bloquear threads que tentaram aceder à escada rolante para cima mesmo quando a escada rolante está a ser utilizada para baixo, até a escada estar livre novamente.
+ incluir uma variável global como por exemplo (current_direction) que registre a direção atual da escada e ajustar esse valor conforme as pessoas a utilizem, além de sincronizar as mudanças de direção para garantir que a escada opere em apenas uma direção por vez. Ou um sistema de multi-thread em que apenas uma direção da escada rolante esteja em uso a qualquer momento em um sistema de threads múltiplas pode ser implementado com uma variável de condição adicional junto com um mutex. A variável de condição usaria o estatuto para bloquear threads que tentaram aceder à escada rolante para cima mesmo quando a escada rolante está a ser utilizada para baixo, até a escada estar livre novamente.
 
 
 
