@@ -5,3 +5,4 @@ LABORATORIO 04------Solução utilizando pthreads para resolver o problema da mu
 
 PRINT AWS:
 
+![image](https://github.com/JoaoGian/labSO/assets/118188665/67c80ea2-c478-422d-aa5f-2945414561e4)
