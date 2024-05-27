@@ -1,8 +1,8 @@
 ## Projeto 2 - Sistemas Operacionais
 
 ## Tranferência de fundos entre duas contas
-
-Este código ilustra uma aplicação prática de sincronização de threads utilizando mutexes para garantir a integridade dos dados em operações concorrentes. Ele demonstra a criação e gerenciamento de threads, alocação de memória para pilhas de threads e uso de mutexes para evitar condições de corrida. Ao seguir as práticas de sincronização, o código assegura que as transferências entre as contas sejam realizadas de forma segura e correta, mesmo em um ambiente altamente concorrente.
+Neste projeto, foi desenvolvido um programa para simular a transferência de fundos entre duas contas, denominadas To (destino) e From (origem). O programa é implementado utilizando threads da biblioteca Pthreads no Linux, onde cada thread representa uma operação de transferência entre as contas. Para resolver os problemas de concorrência e evitar condições de corrida, o programa utiliza mutexes da biblioteca Pthreads. Esses mutexes garantem que apenas uma thread por vez possa acessar a região crítica de memória, onde o saldo da conta de origem é atualizado. O programa permite que as transferências ocorram em ambas as direções  da conta From para a conta To e vice-versa - durante a execução. Isso é controlado de acordo com a direção especificada para cada thread, e o saldo só é transferido se a conta de origem tiver fundos suficientes.
+Na primeira abordagem, as transferências das duas  direções utilizam o mesmo valor de 100 unidades. Na segunda abordagem, valores diferentes são usados nas transferências - 100  em uma direção e 0 na outra. 
 
 ## Bibliotecas incluidas
 
