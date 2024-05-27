@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <pthread.h> // Inclui a biblioteca para usar mutex
 
-// 64kB stack
+
 #define FIBER_STACK 1024*64
 
 struct c {
