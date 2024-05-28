@@ -2,7 +2,7 @@
 
 ## Tranferência de fundos entre duas contas
 
-Neste projeto, foi desenvolvido um programa para simular a transferência de fundos entre duas contas,  To (origem) e From (destino). As duas contas, contaOrigem e contaDestino, começam com um saldo inicial de 100 unidades cada uma. O programa cria 100 threads, divididas igualmente para realizar duas operações: transferir um montante de contaOrigem para contaDestino (montante1 de 20 unidades) e transferir um montante de contaDestino para contaOrigem (montante2 de 10 unidades). 
+Neste projeto, foi desenvolvido um programa para simular a transferência de fundos entre duas contas,  To (destino) e From (origem). As duas contas, contaOrigem e contaDestino, começam com um saldo inicial de 100 unidades cada uma. O programa cria 100 threads, divididas igualmente para realizar duas operações: transferir um montante de contaOrigem para contaDestino (montante1 de 20 unidades) e transferir um montante de contaDestino para contaOrigem (montante2 de 10 unidades). 
 As funcoes de cada transferencia  são protegidas por um mutex para evitar condições de erro, garantindo que apenas uma thread por vez possa modificar os saldos das contas.
 ## Bibliotecas incluidas
 
@@ -25,8 +25,8 @@ As funcoes de cada transferencia  são protegidas por um mutex para evitar condi
 
 ## Comprovante dos resultados 
 
-1.A conta to(origem) pode receber mais de uma transferência simultânea;
-2.A conta from(destino) pode enviar mais de uma transferência simultânea;
+1.A conta to(destino) pode receber mais de uma transferência simultânea;
+2.A conta from(origem) pode enviar mais de uma transferência simultânea;
 
 
 ![image](https://github.com/JoaoGian/labSO/assets/118188665/69248c86-1d16-4e4b-a9a1-ff01a0184b59)
