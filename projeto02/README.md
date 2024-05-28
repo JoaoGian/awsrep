@@ -30,7 +30,7 @@ As funcoes de cada transferencia  são protegidas por um mutex para evitar condi
 
 ![image](https://github.com/JoaoGian/labSO/assets/118188665/3d973cf8-7fd9-40a8-9a17-d6df1735fd63)
 
-A conta to(destino)  esta recebendo em valores de 10 unidades mais de uma transferencia, no caso 3 transferencias, enquanto a conta from(origem) envia mais de uma transferencia simultanea
+A conta to(destino)  esta recebendo em valores de 10 unidades mais de uma transferencia, no caso 2 transferencias, enquanto a conta from(origem) envia mais de uma transferencia simultanea
 
 
 
