@@ -22,7 +22,7 @@ Na primeira abordagem, as transferências das duas  direções utilizam o mesmo 
 
 
 
-##Comprovante dos resultados 
+## Comprovante dos resultados 
 
 1.A conta to pode receber mais de uma transferência simultânea;
 
