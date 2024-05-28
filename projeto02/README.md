@@ -33,7 +33,7 @@ As funcoes de cada transferencia  são protegidas por um mutex para evitar condi
 
 
 
-A conta to(origem)  esta recebendo em  mais de uma transferencia.
+A conta to esta recebendo em  mais de uma transferencia.
 
 
 
