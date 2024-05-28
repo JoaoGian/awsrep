@@ -25,8 +25,8 @@ As funcoes de cada transferencia  são protegidas por um mutex para evitar condi
 
 ## Comprovante dos resultados 
 
-1.A conta to(destino) pode receber mais de uma transferência simultânea;
-2.A conta from(origem) pode enviar mais de uma transferência simultânea;
+1.A conta to(origem) pode receber mais de uma transferência simultânea;
+2.A conta from(destino) pode enviar mais de uma transferência simultânea;
 
 ![image](https://github.com/JoaoGian/labSO/assets/118188665/2cf3d5d2-a4b5-462d-9915-1144018f9b69)
 
