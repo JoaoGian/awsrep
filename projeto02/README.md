@@ -1,9 +1,9 @@
 ## Projeto 2 - Sistemas Operacionais
 
 ## Tranferência de fundos entre duas contas
-Neste projeto, foi desenvolvido um programa para simular a transferência de fundos entre duas contas,  To (destino) e From (origem). O programa é implementado utilizando threads da biblioteca Pthreads , onde cada thread representa uma operação de transferência entre as contas. Para resolver os problemas de concorrência e evitar condições de corrida, o programa utiliza mutexes da biblioteca Pthreads. Esses mutexes garantem que apenas uma thread por vez possa acessar a região crítica de memória, onde o saldo da conta de origem é atualizado. O programa permite que as transferências ocorram em ambas as direções  da conta From para a conta To e vice-versa - durante a execução. Isso é controlado de acordo com a direção especificada para cada thread, e o saldo só é transferido se a conta de origem tiver fundos suficientes.
 
-
+Neste projeto, foi desenvolvido um programa para simular a transferência de fundos entre duas contas,  To (destino) e From (origem). . As duas contas, contaOrigem e contaDestino, começam com um saldo inicial de 100 unidades cada uma. O programa cria 100 threads, divididas igualmente para realizar duas operações: transferir um montante de contaOrigem para contaDestino (montante1 de 20 unidades) e transferir um montante de contaDestino para contaOrigem (montante2 de 10 unidades). 
+As funcoes de cada transferencia  são protegidas por um mutex para evitar condições de corrida, garantindo que apenas uma thread por vez possa modificar os saldos das contas.
 ## Bibliotecas incluidas
 
 #define _GNU_SOURCE
