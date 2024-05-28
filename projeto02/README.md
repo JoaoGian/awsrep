@@ -52,8 +52,7 @@ A conta to esta recebendo em  mais de uma transferencia.
 ![image](https://github.com/JoaoGian/labSO/assets/118188665/34dd0d83-ebeb-45a0-80fd-bd540d157988)
 
 
-A conta foi insuficiente, pois as transferencias estavam sendo feitas de 20 em 20. O programa impede ao verificar o valor de tranferência da conta ,  permitindo a transferência caso tenha saldo maior igual ao valor anterior.
-
+A conta foi insuficiente, pois as transferencias estavam sendo feitas de 20 em 20. O programa impede ao verificar o valor de tranferência da conta.
 
 
 
