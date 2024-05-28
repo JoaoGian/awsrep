@@ -29,7 +29,8 @@ As funcoes de cada transferencia  são protegidas por um mutex para evitar condi
 2.A conta from(origem) pode enviar mais de uma transferência simultânea;
 
 
-![image](https://github.com/JoaoGian/labSO/assets/118188665/69248c86-1d16-4e4b-a9a1-ff01a0184b59)
+![image](https://github.com/JoaoGian/labSO/assets/118188665/e5bfcb7c-10c1-410f-9244-1f955af08c11)
+
 
 
 A conta to(origem)  esta recebendo em  mais de uma transferencia.
