@@ -91,7 +91,7 @@ receber e a conta que recebia pode enviar;
 
 ![image](https://github.com/JoaoGian/labSO/assets/118188665/42ab01f6-950d-4db8-b86b-d040ab9f7dbe)
 
-Ao total sao 10 threads sendo 50/50, 50 to e 50 from
+Ao total sao 100 threads sendo 50/50, 50 to e 50 from
 
 
 
