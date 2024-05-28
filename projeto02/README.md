@@ -7,14 +7,14 @@ As funcoes de cada transferencia  são protegidas por um mutex para evitar condi
 ## Bibliotecas incluidas
 
 #define _GNU_SOURCE
-#include <stdlib.h>
 #include <malloc.h>
+#include <pthread.h>
+#include <sched.h>
+#include <signal.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-#include <signal.h>
-#include <sched.h>
-#include <stdio.h>
-#include <pthread.h>
 
 #para executar o programa
 
