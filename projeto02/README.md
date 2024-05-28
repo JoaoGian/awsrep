@@ -32,7 +32,7 @@ As funcoes de cada transferencia  são protegidas por um mutex para evitar condi
 ![image](https://github.com/JoaoGian/labSO/assets/118188665/69248c86-1d16-4e4b-a9a1-ff01a0184b59)
 
 
-A conta to(destino)  esta recebendo em  mais de uma transferencia.
+A conta to(origem)  esta recebendo em  mais de uma transferencia.
 
 
 
