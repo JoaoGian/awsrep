@@ -18,6 +18,7 @@ Neste projeto, foi desenvolvido um programa para simular a transferência de fun
 
 #para executar o programa
 
+./nome_criado_para_executar (proj02)
 
 
 
@@ -100,15 +101,7 @@ receber e a conta que recebia pode enviar;
 
 
 
-##Execucao do programa sendo realizada
 
-1.Duas contas transferindo o mesmo valor entre si
-
-
-
-
-
-2.Conta To enviando todo o dinheiro para From
 
 
 
