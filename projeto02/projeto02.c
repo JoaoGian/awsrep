@@ -1,108 +1,106 @@
 #define _GNU_SOURCE
-#include <stdlib.h>
 #include <malloc.h>
+#include <pthread.h>
+#include <sched.h>
+#include <signal.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-#include <signal.h>
-#include <sched.h>
-#include <stdio.h>
-#include <pthread.h> // Inclui a biblioteca para usar mutex
 
+#define STACK_SIZE 1024 * 64
 
-#define FIBER_STACK 1024*64
-
-struct c {
+typedef struct {
     int saldo;
-};
-typedef struct c conta;
+} Conta;
 
-conta from, to;
-int valor;
-pthread_mutex_t lock_from, lock_to; // Define os mutexes
+Conta contaOrigem, contaDestino;
+int montante1, montante2;
+pthread_mutex_t lock; 
 
-// A função de transferência agora usa mutexes para sincronização
-int transferencia(void *arg) {
-    int direction = *(int *)arg; // Direção da transferência: 0 para from -> to, 1 para to -> from
+// Função de transferência protegida por mutex
+void* executarTransferencia(void *arg) {
+    pthread_mutex_lock(&lock); // Bloqueia o mutex antes de acessar as variáveis compartilhadas
 
-    if (direction == 0) {
-        pthread_mutex_lock(&lock_from);
-        pthread_mutex_lock(&lock_to);
-        if (from.saldo >= valor) {
-            from.saldo -= valor;
-            to.saldo += valor;
-            printf("Transferência concluída com sucesso! (from -> to)\n");
-        } else {
-            printf("Saldo insuficiente na conta 'from'.\n");
-        }
-        pthread_mutex_unlock(&lock_to);
-        pthread_mutex_unlock(&lock_from);
+    if (contaOrigem.saldo >= montante1) {
+        contaOrigem.saldo -= montante1;
+        contaDestino.saldo += montante1;
     } else {
-        pthread_mutex_lock(&lock_to);
-        pthread_mutex_lock(&lock_from);
-        if (to.saldo >= valor) {
-            to.saldo -= valor;
-            from.saldo += valor;
-            printf("Transferência concluída com sucesso! (to -> from)\n");
-        } else {
-            printf("Saldo insuficiente na conta 'to'.\n");
-        }
-        pthread_mutex_unlock(&lock_from);
-        pthread_mutex_unlock(&lock_to);
+        printf("Saldo insuficiente na conta de origem!\n");
+        pthread_mutex_unlock(&lock);
+        return NULL;
     }
 
-    printf("Saldo de 'from': %d\n", from.saldo);
-    printf("Saldo de 'to': %d\n", to.saldo);
-    return 0;
+    printf("Transferência concluída com sucesso! (Origem -> Destino)\n");
+    printf("Saldo de Origem: %d\n", contaOrigem.saldo);
+    printf("Saldo de Destino: %d\n", contaDestino.saldo);
+
+    pthread_mutex_unlock(&lock); // Libera o mutex após o acesso às variáveis compartilhadas
+    return NULL;
+}
+
+void* executarTransferenciaReversa(void *arg) {
+    pthread_mutex_lock(&lock); // Bloqueia o mutex antes de acessar as variáveis compartilhadas
+
+    if (contaDestino.saldo >= montante2) {
+        contaDestino.saldo -= montante2;
+        contaOrigem.saldo += montante2;
+    } else {
+        printf("Saldo insuficiente na conta de destino!\n");
+        pthread_mutex_unlock(&lock);
+        return NULL;
+    }
+
+    printf("Transferência concluída com sucesso! (Destino -> Origem)\n");
+    printf("Saldo de Origem: %d\n", contaOrigem.saldo);
+    printf("Saldo de Destino: %d\n", contaDestino.saldo);
+
+    pthread_mutex_unlock(&lock); // Libera o mutex após o acesso às variáveis compartilhadas
+    return NULL;
 }
 
 int main() {
-    void* stack;
-    pid_t pid;
+    void* pilha;
+    pthread_t threads[100];
     int i;
-    int direction[2] = {0, 1}; // Direções das transferências
 
-    // Inicializa os mutexes
-    if (pthread_mutex_init(&lock_from, NULL) != 0 || pthread_mutex_init(&lock_to, NULL) != 0) {
-        perror("pthread_mutex_init: could not initialize mutexes");
+    // Inicialização das contas
+    contaOrigem.saldo = 100;
+    contaDestino.saldo = 100;
+    montante1 = 20;
+    montante2 = 10;
+
+    pthread_mutex_init(&lock, NULL); // Inicializa o mutex
+
+    
+    pilha = malloc(STACK_SIZE);
+    if (pilha == NULL) {
+        perror("Erro na alocação da pilha");
         exit(1);
     }
 
-    // Allocate the stack
-    stack = malloc(FIBER_STACK);
-    if (stack == 0) {
-        perror("malloc: could not allocate stack");
-        exit(1);
-    }
+    // Criação das threads para transferências
+    for (i = 0; i < 50; i++) {
+        if (pthread_create(&threads[i], NULL, executarTransferencia, NULL) != 0) {
+            perror("Erro na criação da thread");
+            exit(2);
+        }
 
-    // Todas as contas começam com saldo 100
-    from.saldo = 100;
-    to.saldo = 100;
-    printf("Transferindo 10 para a conta 'to'\n");
-    valor = 10;
-
-    for (i = 0; i < 100; i++) {
-        // Alterna entre transferências from -> to e to -> from
-        int dir = i % 2;
-        // Call the clone system call to create the child thread
-        pid = clone(&transferencia, (char*) stack + FIBER_STACK,
-                    SIGCHLD | CLONE_FS | CLONE_FILES | CLONE_SIGHAND | CLONE_VM, &direction[dir]);
-        if (pid == -1) {
-            perror("clone");
+        if (pthread_create(&threads[i + 50], NULL, executarTransferenciaReversa, NULL) != 0) {
+            perror("Erro na criação da thread");
             exit(2);
         }
     }
 
-    // Espera todos os processos filhos terminarem
-    while (wait(NULL) > 0);
+    // Espera todas as threads terminarem
+    for (i = 0; i < 100; i++) {
+        pthread_join(threads[i], NULL);
+    }
 
-    // Free the stack
-    free(stack);
-    printf("Transferências concluídas e memória liberada.\n");
+    // Liberação da pilha e destruição do mutex
+    free(pilha);
+    pthread_mutex_destroy(&lock);
 
-    // Destroi os mutexes
-    pthread_mutex_destroy(&lock_from);
-    pthread_mutex_destroy(&lock_to);
-
+    printf("Todas as transferências foram concluídas e a memória foi liberada.\n");
     return 0;
 }
-
