@@ -68,7 +68,7 @@ receber e a conta que recebia pode enviar;
 
 ![image](https://github.com/JoaoGian/labSO/assets/118188665/04da05ae-a8ce-4bc1-b146-7422d0fe2827)
 
-
+Aqui temos 3 transferencias do to(destino) para o from(origem) e duas transferencias do from (origem) para to (destino)
 
 ![image](https://github.com/JoaoGian/labSO/assets/118188665/bcffc091-a4d1-4e16-9532-e73d4ae36c29)
 
@@ -91,7 +91,7 @@ receber e a conta que recebia pode enviar;
 
 ![image](https://github.com/JoaoGian/labSO/assets/118188665/42ab01f6-950d-4db8-b86b-d040ab9f7dbe)
 
-Ao total sao 100 threads sendo 50/50, 50 to e 50 from
+Ao total sao 100 threads, sendo 50 transacoes to e 50 transacoes from.
 
 
 
